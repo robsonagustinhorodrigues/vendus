@@ -9,8 +9,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <!-- TopBar -->
+    {% include 'components/topbar.html' %}
     
     <div class="d-flex" id="wrapper">
+        <!-- SideBar -->
+        {% include 'components/sidebar.html' %}
         
         <!-- Page Content -->
         <div id="page-content-wrapper" class="flex-grow-1">
@@ -31,7 +35,5 @@
         var toast = new bootstrap.Toast(toastEl) // Inicializa a Toast
         toast.show()  // Exibe a Toast
     </script>
-
-    
 </body>
 </html>

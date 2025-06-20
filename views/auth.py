@@ -7,30 +7,30 @@ auth = Blueprint('auth', __name__)
 # Rota para o login do usuário
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    # Verificar se o usuário já está logado
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard.index'))  # Redireciona para o dashboard se já estiver logado
-
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         
         # Verificar se o usuário existe
-        user = User.query.filter_by(username=username).first()
-        
-        # Verificar se o usuário existe e se a senha está correta
-        if user and user.check_password(password):  # Usando o método de verificação de senha
-            login_user(user)  # Registra o usuário na sessão
-            return redirect(url_for('dashboard.index'))  # Redireciona para o dashboard após login
+        user = User.query.filter_by(email=email).first()
+
+        # Depuração: Verifique se o usuário existe
+        if user:
+            print(f"Usuário encontrado: {user.username}")
+            if user.check_password(password):  # Verificando a senha com o hash
+                login_user(user)  # Registra o usuário na sessão
+                return redirect(url_for('dashboard.index'))  # Redireciona para o dashboard após login
+            else:
+                flash('Senha incorreta. Tente novamente.', 'error')  # Mensagem de erro de senha
         else:
-            flash('Usuário ou senha inválidos. Tente novamente.', 'error')  # Exibe mensagem de erro
+            flash('Usuário não encontrado. Tente novamente.', 'error')  # Mensagem de erro de usuário
 
     return render_template('login.html')
 
-
+# Rota para o logout do usuário
 @auth.route('/logout')
 @login_required
 def logout():
-    logout_user()  # Faz o logout do usuário
+    logout_user()
     flash('Você foi desconectado com sucesso!', 'success')  # Mensagem de sucesso ao deslogar
-    return redirect(url_for('auth.login')) 
+    return redirect(url_for('auth.login'))  # Redireciona de volta para a tela de login

@@ -1,0 +1,46 @@
+<!-- Sidebar -->
+<div class="bg-dark text-white p-3" id="sidebar" style="width: 250px; height: 100vh; position: fixed;">
+    <h4 class="text-center mb-4">Meu Dashboard</h4>
+    
+    <!-- Menu de navegação -->
+    <ul class="nav flex-column">
+        <!-- Item de navegação com ícone -->
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url_for('dashboard.index') }}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- Submenu -->
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#settingsMenu" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="settingsMenu">
+                <i class="fas fa-cogs"></i> Configurações
+                <i class="fas fa-chevron-down float-end"></i>
+            </a>
+            <div class="collapse" id="settingsMenu">
+                <ul class="nav flex-column ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Segurança</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Outro item de navegação -->
+        <li class="nav-item">
+            <a class="nav-link text-white" href="#">
+                <i class="fas fa-chart-line"></i> Análises
+            </a>
+        </li>
+        
+        <!-- Logout -->
+        <li class="nav-item mt-5">
+            <a class="nav-link text-white" href="{{ url_for('auth.logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>

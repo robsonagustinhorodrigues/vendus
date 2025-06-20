@@ -1,0 +1,22 @@
+#sidebar {
+    box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);  /* Adiciona sombra */
+    z-index: 999;
+}
+
+#sidebar .nav-item {
+    margin-bottom: 1rem;
+}
+
+#sidebar .nav-link {
+    font-size: 1.1rem;
+    padding: 10px 15px;
+}
+
+#sidebar .nav-link:hover {
+    background-color: #343a40;
+    border-radius: 5px;
+}
+
+#sidebar .nav-link.active {
+    background-color: #495057;
+}
