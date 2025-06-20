@@ -1,30 +1,24 @@
+/* Sidebar padrão */
 #sidebar {
-  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
-  z-index: 999;
-}
-
-#sidebar .nav-item {
-  margin-bottom: 1rem;
-}
-
-#sidebar .nav-link {
-  font-size: 1.1rem;
-  padding: 10px 15px;
-}
-
-#sidebar .nav-link:hover {
-  background-color: #343a40;
-  border-radius: 5px;
-}
-
-#sidebar .nav-link.active {
-  background-color: #495057;
+  width: 250px;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 1040;
 }
 
 .transition {
-  transition: left 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
+/* Ajuste o conteúdo principal */
+#mainContent {
+  margin-left: 250px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Com sidebar escondido em telas pequenas */
 @media (max-width: 991.98px) {
   #sidebar {
     left: -250px;
