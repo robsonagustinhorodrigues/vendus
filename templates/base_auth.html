@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Dashboard{% endblock %}</title>
 
-  <!-- Bootstrap e ícones -->
+  <!-- Bootstrap, ícones e estilos -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
@@ -16,12 +16,17 @@
   <!-- Topbar -->
   {% include 'components/topbar.html' %}
 
+  <!-- Botão toggle para sidebar no mobile -->
+  <button class="btn btn-outline-secondary d-lg-none m-3 position-fixed z-3" id="sidebarToggle" style="top: 60px; left: 10px;">
+    <i class="bi bi-list"></i>
+  </button>
+
   <div class="d-flex">
     <!-- Sidebar -->
     {% include 'components/sidebar.html' %}
 
     <!-- Conteúdo da Página -->
-    <main class="flex-grow-1 ms-250 p-4" style="margin-left: 250px;">
+    <main class="flex-grow-1 p-4" id="mainContent" style="margin-left: 250px;">
       {% block content %}
       {% endblock %}
     </main>
@@ -30,13 +35,16 @@
   <!-- Toast Notification -->
   {% include 'components/toast_notification.html' %}
 
-  <!-- Scripts Bootstrap -->
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    var toastEl = document.getElementById('toastNotification');
-    if (toastEl) {
-      var toast = new bootstrap.Toast(toastEl);
-      toast.show();
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("sidebarToggle");
+
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+      });
     }
   </script>
 </body>

@@ -1,23 +1,40 @@
 #sidebar {
-    box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);  /* Adiciona sombra */
-    z-index: 999;
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
+  z-index: 999;
 }
 
 #sidebar .nav-item {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 #sidebar .nav-link {
-    font-size: 1.1rem;
-    padding: 10px 15px;
+  font-size: 1.1rem;
+  padding: 10px 15px;
 }
 
 #sidebar .nav-link:hover {
-    background-color: #343a40;
-    border-radius: 5px;
+  background-color: #343a40;
+  border-radius: 5px;
 }
 
 #sidebar .nav-link.active {
-    background-color: #495057;
+  background-color: #495057;
 }
 
+.transition {
+  transition: left 0.3s ease-in-out;
+}
+
+@media (max-width: 991.98px) {
+  #sidebar {
+    left: -250px;
+  }
+
+  #sidebar.active {
+    left: 0;
+  }
+
+  #mainContent {
+    margin-left: 0 !important;
+  }
+}
