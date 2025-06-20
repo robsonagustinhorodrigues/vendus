@@ -1,13 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+<!-- Topbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Meu Dashboard</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Logo ou nome da aplicação -->
+    <a class="navbar-brand fw-bold text-primary" href="#">
+      <i class="bi bi-shop-window me-2"></i>Dashboard
+    </a>
+
+    <!-- Botão para colapsar em telas menores -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Menu colapsável -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <!-- Saudação ao usuário -->
+        <li class="nav-item me-3">
+          <span class="text-muted small">Olá, {{ current_user.username }}</span>
+        </li>
+
+        <!-- Botão de logout -->
         <li class="nav-item">
-          <a class="nav-link active" href="{{ url_for('auth.logout') }}">Logout</a>
+          <a class="btn btn-outline-danger btn-sm" href="{{ url_for('auth.logout') }}">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </a>
         </li>
       </ul>
     </div>
