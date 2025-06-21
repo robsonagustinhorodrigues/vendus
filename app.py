@@ -40,8 +40,9 @@ app.register_blueprint(dashboard)
 app.register_blueprint(api)
 
 # Executando a aplicação
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    host = os.environ.get("HOST", "0.0.0.0")
-    debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
-    app.run(host=host, port=port, debug=debug)
+if os.getenv('FLASK_ENV') == 'development':
+    if __name__ == '__main__':
+        port = int(os.environ.get("PORT", 5000))
+        host = os.environ.get("HOST", "0.0.0.0")
+        debug = os.environ.get("FLASK_ENV", "development").lower() == "development"
+        app.run(host=host, port=port, debug=debug)
