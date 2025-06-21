@@ -3,13 +3,13 @@ from flask_login import login_required, current_user
 from models import MeliIntegration
 import requests
 
-dashboard = Blueprint('dashboard', __name__)
+dashboard = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
-from anuncios_meli import anuncios_meli
-dashboard.register_blueprint(anuncios_meli)
+from .anuncios_meli import anuncios_meli
+dashboard.register_blueprint(anuncios_meli, url_prefix='/anuncios_meli')
 
-from integracoes_meli import integracoes_meli
-dashboard.register_blueprint(integracoes_meli)
+from .integracoes_meli import integracoes_meli
+dashboard.register_blueprint(integracoes_meli, url_prefix='/integracoes_meli')
 
 # Rota principal do dashboard, mostrando os anúncios do usuário
 @dashboard.route('/')

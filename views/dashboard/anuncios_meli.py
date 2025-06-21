@@ -12,4 +12,4 @@ def index():
     integracoes_meli = MeliIntegration.query.filter_by(user_id=current_user.id).all()  # Pega as integrações do usuário
 
     # Renderiza o template e envia os anúncios para o front-end
-    return render_template('dashboard.anuncios_meli.html', integracoes_meli=integracoes_meli)
+    return render_template('dashboard/anuncios_meli.html', integracoes_meli=integracoes_meli)

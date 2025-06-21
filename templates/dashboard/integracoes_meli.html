@@ -1,0 +1,46 @@
+{% extends 'base_auth.html' %}
+
+{% block title %}Integrações Mercado Livre{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fw-bold mb-0">Integrações Mercado Livre</h2>
+    <a href="{{ url_for('api.meli_auth.iniciar_login_meli') }}" class="btn btn-primary">
+      <i class="bi bi-plug me-2"></i> Conectar Nova Conta
+    </a>
+  </div>
+
+  {% if integracoes_meli %}
+    <div class="row g-4">
+      {% for conta in integracoes_meli %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+              <h5 class="card-title fw-semibold">{{ conta.meli_nome or "Loja Meli #" ~ conta.mercado_livre_store_id }}</h5>
+              <p class="text-muted small mb-2">
+                ID da Loja: <code>{{ conta.meli_id }}</code>
+              </p>
+              <p class="text-muted small mb-3">
+                Email: <code>{{ conta.meli_email }}</code>
+              </p>
+              <p class="text-muted small mb-3">
+                Link: <code>{{ conta.meli_link }}</code>
+              </p>
+              <form method="POST" action="{{ url_for('integracoes_meli.remover_integracao', id=conta.id) }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                  <i class="bi bi-trash me-1"></i> Remover Integração
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center">
+      Nenhuma conta Mercado Livre conectada. Clique no botão acima para iniciar a integração.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

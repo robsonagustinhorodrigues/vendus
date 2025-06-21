@@ -34,8 +34,10 @@ with app.app_context():
 # Registrando Blueprints para as rotas de autenticação e dashboard
 from views.auth import auth
 from views.dashboard import dashboard
+from views.api import api
 app.register_blueprint(auth)
 app.register_blueprint(dashboard)
+app.register_blueprint(api)
 
 # Executando a aplicação
 if __name__ == '__main__':
