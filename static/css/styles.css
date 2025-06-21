@@ -6,19 +6,26 @@
   left: 0;
   position: fixed;
   z-index: 1040;
+  background-color: #fff;
+  transition: left 0.3s ease-in-out;
 }
 
-.transition {
-  transition: all 0.3s ease-in-out;
-}
-
-/* Ajuste o conteúdo principal */
+/* Conteúdo principal */
 #mainContent {
   margin-left: 250px;
   transition: margin-left 0.3s ease-in-out;
 }
 
-/* Com sidebar escondido em telas pequenas */
+/* Quando sidebar está minimizado */
+#sidebar.minimized {
+  left: -250px;
+}
+
+#sidebar.minimized ~ #mainContent {
+  margin-left: 0 !important;
+}
+
+/* Mobile override */
 @media (max-width: 991.98px) {
   #sidebar {
     left: -250px;
@@ -28,7 +35,22 @@
     left: 0;
   }
 
+  #sidebar.active ~ #mainContent {
+    margin-left: 250px;
+  }
+
   #mainContent {
     margin-left: 0 !important;
   }
+
+  #mainContent.shifted {
+    margin-left: 250px !important;
+  }
+}
+
+.navbar .btn {
+  padding: 6px 10px;
+}
+.navbar-brand {
+  font-size: 1.2rem;
 }

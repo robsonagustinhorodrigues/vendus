@@ -5,6 +5,12 @@ import requests
 
 dashboard = Blueprint('dashboard', __name__)
 
+from anuncios_meli import anuncios_meli
+dashboard.register_blueprint(anuncios_meli)
+
+from integracoes_meli import integracoes_meli
+dashboard.register_blueprint(integracoes_meli)
+
 # Rota principal do dashboard, mostrando os anúncios do usuário
 @dashboard.route('/')
 @login_required

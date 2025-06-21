@@ -1,26 +1,33 @@
 <!-- Topbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
-  <div class="container-fluid">
-    <!-- Logo ou nome da aplicação -->
-    <a class="navbar-brand fw-bold text-primary" href="#">
-      <i class="bi bi-shop-window me-2"></i>Dashboard
-    </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-3 position-fixed w-100"
+     style="top: 0; z-index: 1050; height: 60px">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
 
-    <!-- Botão para colapsar em telas menores -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Botão + Logo lado a lado -->
+    <div class="d-flex align-items-center gap-2">
+      <!-- Botão sidebar -->
+      <button class="btn btn-outline-secondary d-flex align-items-center" id="sidebarToggle" type="button">
+        <i class="bi bi-list" id="sidebarIcon"></i>
+      </button>
+
+      <!-- Logo -->
+      <a class="navbar-brand fw-bold text-primary mb-0" href="#">
+        <i class="bi bi-shop-window me-1"></i>Vendus
+      </a>
+    </div>
+
+    <!-- Botão de colapso para o menu do topo -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Menu colapsável -->
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Saudação ao usuário -->
+    <!-- Menu colapsável direito -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+      <ul class="navbar-nav align-items-center">
         <li class="nav-item me-3">
           <span class="text-muted small">Olá, {{ current_user.username }}</span>
         </li>
-
-        <!-- Botão de logout -->
         <li class="nav-item">
           <a class="btn btn-outline-danger btn-sm" href="{{ url_for('auth.logout') }}">
             <i class="bi bi-box-arrow-right"></i> Sair
