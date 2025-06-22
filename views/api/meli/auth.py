@@ -10,13 +10,13 @@ import secrets
 from datetime import datetime, timedelta, timezone
 from services.meli.client_meli import MeliClient
 
-meli_auth = Blueprint("meli_auth", __name__)
+auth = Blueprint("auth", __name__)
 
-@meli_auth.route('/')
+@auth.route("/")
 def index():
-    return "API is running. api/meli_auth"
+    return "API is running. api/meli/auth"
 
-@meli_auth.route("/login")
+@auth.route("/login")
 @login_required
 def iniciar_login_meli():
     code_verifier = secrets.token_urlsafe(48)[:64]
@@ -37,7 +37,7 @@ def iniciar_login_meli():
     return redirect(meli_auth_url)
 
 
-@meli_auth.route("/callback")
+@auth.route("/callback")
 @login_required
 def callback_meli():
 

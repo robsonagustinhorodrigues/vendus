@@ -26,13 +26,12 @@ login_manager.login_view = 'auth.login'  # Redirecionar para a página de login 
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Registrando Blueprints para as rotas de autenticação e dashboard
-from views.auth import auth
-from views.dashboard import dashboard
-from views.api import api
-app.register_blueprint(auth)
+# Registrando Blueprints para as rotas
+from views import dashboard, api, auth, views
+app.register_blueprint(views)
 app.register_blueprint(dashboard)
 app.register_blueprint(api)
+app.register_blueprint(auth)
 
 # Executando a aplicação
 if os.getenv('FLASK_ENV') == 'development':
