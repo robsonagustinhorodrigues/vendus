@@ -17,6 +17,7 @@ def adicionar():
     store_id = request.form.get('mercado_livre_store_id')
 
     if nome and store_id:
+        store_id = str(store_id)
         nova = MeliIntegration(
             nome=nome,
             mercado_livre_store_id=store_id,
