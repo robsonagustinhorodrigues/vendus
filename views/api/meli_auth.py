@@ -88,7 +88,7 @@ def callback_meli():
 
     integracao = MeliIntegration(
         user_id=current_user.id,
-        nome=f"Conta Meli {user_id}",
+        meli_nome=f"Conta Meli {user_id}",
         meli_store_id=str(user_id),
         access_token=access_token,
         refresh_token=refresh_token,
