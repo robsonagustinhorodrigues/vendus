@@ -21,17 +21,25 @@
               <p class="text-muted small mb-2">
                 ID da Loja: <code>{{ conta.meli_id }}</code>
               </p>
-              <p class="text-muted small mb-3">
+              <p class="text-muted small mb-2">
                 Email: <code>{{ conta.meli_email }}</code>
               </p>
               <p class="text-muted small mb-3">
                 Link: <code>{{ conta.meli_link }}</code>
               </p>
+
               <form method="POST" action="{{ url_for('dashboard.meli_integracoes.remover', id=conta.id) }}">
-                <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                <button type="submit" class="btn btn-sm btn-outline-danger w-100 mb-2">
                   <i class="bi bi-trash me-1"></i> Remover Integração
                 </button>
               </form>
+
+              <button type="button"
+                      class="btn btn-sm btn-outline-success w-100"
+                      onclick="testarConexao({{ conta.id }})">
+                <i class="bi bi-check-circle me-1"></i> Testar Conexão
+              </button>
+
             </div>
           </div>
         </div>
@@ -43,4 +51,47 @@
     </div>
   {% endif %}
 </div>
+
+<!-- Modal de Resposta -->
+<div class="modal fade" id="modalResposta" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Resposta da API do Mercado Livre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <pre id="conteudoResposta" class="bg-light p-3 rounded text-wrap small">Carregando...</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  function testarConexao(id) {
+    const modal = new bootstrap.Modal(document.getElementById('modalResposta'));
+    const pre = document.getElementById('conteudoResposta');
+
+    pre.textContent = 'Carregando...';
+
+    fetch(`/api/meli/me/${id}`)
+      .then(response => {
+        return response.json().catch(() => {
+          return { error: 'Resposta inválida da API', raw: response };
+        });
+      })
+      .then(data => {
+        pre.textContent = JSON.stringify(data, null, 2);
+        modal.show();
+      })
+      .catch(error => {
+        pre.textContent = `Erro: ${error}`;
+        modal.show();
+      });
+  }
+</script>
 {% endblock %}
