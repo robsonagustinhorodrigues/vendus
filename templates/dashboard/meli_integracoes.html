@@ -1,97 +1,365 @@
-{% extends 'base_auth.html' %}
-
-{% block title %}Integrações Mercado Livre{% endblock %}
-
-{% block content %}
+{% extends 'base_auth.html' %} {% block title %}Integrações Mercado Livre{%
+endblock %} {% block content %}
 <div class="container-fluid px-4">
   <div class="d-flex justify-content-between align-items-center my-4">
     <h2 class="fw-bold mb-0">Integrações Mercado Livre</h2>
-    <a href="{{ url_for('api.meli_auth.iniciar_login_meli') }}" class="btn btn-primary">
+    <a
+      href="{{ url_for('api.meli_auth.iniciar_login_meli') }}"
+      class="btn btn-primary"
+    >
       <i class="bi bi-plug me-2"></i> Conectar Nova Conta
     </a>
   </div>
 
   {% if meli_integracoes %}
-    <div class="row g-4">
-      {% for conta in meli_integracoes %}
-        <div class="col-md-6 col-lg-4">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold">{{ conta.meli_nome or "Loja Meli #" ~ conta.meli_store_id }}</h5>
-              <p class="text-muted small mb-2">
-                ID da Loja: <code>{{ conta.meli_id }}</code>
-              </p>
-              <p class="text-muted small mb-2">
-                Email: <code>{{ conta.meli_email }}</code>
-              </p>
-              <p class="text-muted small mb-3">
-                Link: <code>{{ conta.meli_link }}</code>
-              </p>
+  <div class="row g-4">
+    {% for conta in meli_integracoes %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">
+            {{ conta.meli_nome or "Loja Meli #" ~ conta.meli_store_id }}
+          </h5>
+          <p class="text-muted small mb-2">
+            ID da Loja: <code>{{ conta.meli_id }}</code>
+          </p>
+          <p class="text-muted small mb-2">
+            Email: <code>{{ conta.meli_email }}</code>
+          </p>
+          <p class="text-muted small mb-3">
+            Link: <code>{{ conta.meli_link }}</code>
+          </p>
 
-              <form method="POST" action="{{ url_for('dashboard.meli_integracoes.remover', id=conta.id) }}">
-                <button type="submit" class="btn btn-sm btn-outline-danger w-100 mb-2">
-                  <i class="bi bi-trash me-1"></i> Remover Integração
-                </button>
-              </form>
+          <form
+            method="POST"
+            action="{{ url_for('dashboard.meli_integracoes.remover', id=conta.id) }}"
+          >
+            <button
+              type="submit"
+              class="btn btn-sm btn-outline-danger w-100 mb-2"
+            >
+              <i class="bi bi-trash me-1"></i> Remover Integração
+            </button>
+          </form>
 
-              <button type="button"
-                      class="btn btn-sm btn-outline-success w-100"
-                      onclick="testarConexao({{ conta.id }})">
-                <i class="bi bi-check-circle me-1"></i> Testar Conexão
-              </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-primary w-100 mt-2"
+            onclick="analisarReputacao({{ conta.id }})"
+          >
+            <i class="bi bi-bar-chart-fill me-1"></i> Analisar Reputação
+          </button>
 
-            </div>
-          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-success w-100"
+            onclick="testarConexao({{ conta.id }})"
+          >
+            <i class="bi bi-check-circle me-1"></i> Testar Conexão
+          </button>
         </div>
-      {% endfor %}
+      </div>
     </div>
+    {% endfor %}
+  </div>
   {% else %}
-    <div class="alert alert-info text-center">
-      Nenhuma conta Mercado Livre conectada. Clique no botão acima para iniciar a integração.
-    </div>
+  <div class="alert alert-info text-center">
+    Nenhuma conta Mercado Livre conectada. Clique no botão acima para iniciar a
+    integração.
+  </div>
   {% endif %}
 </div>
 
 <!-- Modal de Resposta -->
-<div class="modal fade" id="modalResposta" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="modalResposta"
+  tabindex="-1"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Resposta da API do Mercado Livre</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <h5 class="modal-title" id="modalLabel">
+          Resposta da API do Mercado Livre
+        </h5>
+        <div class="d-flex align-items-center gap-2">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            onclick="copiarResposta()"
+          >
+            <i class="bi bi-clipboard"></i> Copiar
+          </button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fechar"
+          ></button>
+        </div>
       </div>
       <div class="modal-body">
-        <pre id="conteudoResposta" class="bg-light p-3 rounded text-wrap small">Carregando...</pre>
+        <pre id="conteudoResposta" class="bg-light p-3 rounded text-wrap small">
+Carregando...</pre
+        >
       </div>
     </div>
   </div>
 </div>
 
-{% endblock %}
+<!-- Modal de Reputação -->
+<div
+  class="modal fade"
+  id="modalReputacao"
+  tabindex="-1"
+  aria-labelledby="modalReputacaoLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalReputacaoLabel">
+          Análise de Reputação do Vendedor
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fechar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div id="reputacaoVisual">
+          <div class="mb-3">
+            <h5 class="fw-bold">
+              Loja: <span id="reputacaoNickname" class="text-primary"></span>
+            </h5>
+            <p>
+              Status Power Seller:
+              <span id="reputacaoPowerSeller" class="badge bg-secondary"></span>
+            </p>
+            <p>
+              Nível de Reputação:
+              <span id="reputacaoNivel" class="badge"></span>
+            </p>
+          </div>
 
-{% block scripts %}
-{{ super() }}
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-success">Transações</h6>
+                  <ul class="list-unstyled small">
+                    <li>Completas: <span id="transCompletas"></span></li>
+                    <li>Canceladas: <span id="transCanceladas"></span></li>
+                    <li>Total: <span id="transTotal"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-warning">Métricas</h6>
+                  <ul class="list-unstyled small">
+                    <li>Reclamações: <span id="metricaClaims"></span></li>
+                    <li>Atrasos: <span id="metricaDelayed"></span></li>
+                    <li>Cancelamentos: <span id="metricaCanceled"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-info">Outros</h6>
+                  <ul class="list-unstyled small">
+                    <li>Taxa positiva: <span id="taxaPositiva"></span></li>
+                    <li>Taxa negativa: <span id="taxaNegativa"></span></li>
+                    <li>Taxa neutra: <span id="taxaNeutra"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="fw-semibold">Informações Adicionais</h6>
+              <ul class="list-unstyled small">
+                <li>Status: <span id="sellerStatus"></span></li>
+                <li>Desde: <span id="sellerDesde"></span></li>
+                <li>Tipo de Vendedor: <span id="sellerTipo"></span></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-semibold">Perguntas & Atendimento</h6>
+              <ul class="list-unstyled small">
+                <p>Status: <span id="reputacaoStatus"></span></p>
+                <p>Desde: <span id="reputacaoCadastro"></span></p>
+                <p>
+                  Tipo de Vendedor: <span id="reputacaoTipoVendedor"></span>
+                </p>
+                <p>
+                  Taxa de Resposta: <span id="reputacaoTaxaResposta"></span>
+                </p>
+                <p>Tempo Médio: <span id="reputacaoTempoMedio"></span></p>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <pre
+          id="conteudoReputacaoRaw"
+          class="bg-light p-3 mt-4 rounded text-wrap small d-none"
+        ></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %} {{ super() }}
 <script>
+  function copiarResposta() {
+    const conteudo = document.getElementById("conteudoResposta").textContent;
+    navigator.clipboard
+      .writeText(conteudo)
+      .then(() => {
+        alert("Conteúdo copiado para a área de transferência!");
+      })
+      .catch((err) => {
+        alert("Erro ao copiar: " + err);
+      });
+  }
+
   function testarConexao(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalResposta'));
-    const pre = document.getElementById('conteudoResposta');
+    const modal = new bootstrap.Modal(document.getElementById("modalResposta"));
+    const pre = document.getElementById("conteudoResposta");
 
-    pre.textContent = 'Carregando...';
+    pre.textContent = "Carregando...";
 
-    fetch(`/api/meli/me/${id}`)
-      .then(response => {
+    fetch(`/dashboard/meli_integracoes/me/${id}`)
+      .then((response) => {
         return response.json().catch(() => {
-          return { error: 'Resposta inválida da API', raw: response };
+          return { error: "Resposta inválida da API", raw: response };
         });
       })
-      .then(data => {
+      .then((data) => {
         pre.textContent = JSON.stringify(data, null, 2);
         modal.show();
       })
-      .catch(error => {
+      .catch((error) => {
         pre.textContent = `Erro: ${error}`;
         modal.show();
       });
   }
 </script>
+<script>
+  function safeValue(val, defaultVal = "N/D") {
+    return val !== undefined && val !== null && val !== "" ? val : defaultVal;
+  }
+
+  function badgeColor(levelId) {
+    switch (levelId) {
+      case "5_green":
+      case "4_light_green":
+        return "bg-success";
+      case "3_yellow":
+        return "bg-warning";
+      case "2_orange":
+        return "bg-orange"; // defina no CSS se ainda não existir
+      case "1_red":
+        return "bg-danger";
+      default:
+        return "bg-secondary";
+    }
+  }
+
+  function analisarReputacao(id) {
+    const modal = new bootstrap.Modal(
+      document.getElementById("modalReputacao")
+    );
+    const raw = document.getElementById("conteudoReputacaoRaw");
+    raw.classList.add("d-none");
+    raw.textContent = "";
+
+    fetch(`/dashboard/meli_integracoes/reputacao/${id}`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.status !== "success") {
+          raw.classList.remove("d-none");
+          raw.textContent = `Erro: ${d.message}`;
+          modal.show();
+          return;
+        }
+
+        const i = d.data;
+
+        document.getElementById("reputacaoNickname").textContent = safeValue(
+          i.nickname
+        );
+        document.getElementById("reputacaoPowerSeller").textContent = safeValue(
+          i.status_power_seller
+        );
+
+        const nivel = document.getElementById("reputacaoNivel");
+        nivel.textContent = safeValue(i.nivel_reputacao);
+        nivel.className = "badge " + badgeColor(i.nivel_reputacao);
+
+        document.getElementById("transCompletas").textContent = safeValue(
+          i.pontuacao.completed
+        );
+        document.getElementById("transCanceladas").textContent = safeValue(
+          i.pontuacao.canceled
+        );
+        document.getElementById("transTotal").textContent = safeValue(
+          i.pontuacao.total
+        );
+
+        document.getElementById("metricaClaims").textContent =
+          safeValue(i.avaliacoes.claims) + "%";
+        document.getElementById("metricaDelayed").textContent =
+          safeValue(i.avaliacoes.delayed) + "%";
+        document.getElementById("metricaCanceled").textContent =
+          safeValue(i.avaliacoes.cancellations) + "%";
+
+        document.getElementById("taxaPositiva").textContent =
+          safeValue(i.pontuacao.ratings.positive) + "%";
+        document.getElementById("taxaNegativa").textContent =
+          safeValue(i.pontuacao.ratings.negative) + "%";
+        document.getElementById("taxaNeutra").textContent =
+          safeValue(i.pontuacao.ratings.neutral) + "%";
+
+        document.getElementById("reputacaoStatus").textContent = safeValue(
+          i.status
+        );
+        document.getElementById("reputacaoCadastro").textContent =
+          i.cadastro !== "N/D"
+            ? new Date(i.cadastro).toLocaleDateString()
+            : "N/D";
+        document.getElementById("reputacaoTipoVendedor").textContent =
+          safeValue(i.tipo_vendedor);
+
+        document.getElementById("reputacaoTaxaResposta").textContent =
+          i.atendimento.taxa_resposta != null
+            ? (i.atendimento.taxa_resposta * 100).toFixed(1) + "%"
+            : "N/D";
+
+        document.getElementById("reputacaoTempoMedio").textContent =
+          i.atendimento.tempo_medio != null
+            ? Math.round(i.atendimento.tempo_medio / 1000) + "s"
+            : "N/D";
+
+        modal.show();
+      })
+      .catch((e) => {
+        raw.classList.remove("d-none");
+        raw.textContent = `Erro: ${e}`;
+        modal.show();
+      });
+  }
+</script>
+
 {% endblock %}

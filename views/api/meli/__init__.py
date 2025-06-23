@@ -40,27 +40,26 @@ def meli_integracao(id):
 @login_required
 def me(id):
     meli_integracao = MeliIntegracao.query.filter_by(id=id, user_id=current_user.id).first()
+    
     if not meli_integracao:
         return jsonify({
             "status": "error",
-            "message": "Nenhuma conta Mercado Livre conectada para este usuário."
+            "message": "Nenhuma integração encontrada para este ID e usuário.",
         }), 404
 
     meli_service = MeliIntegracaoService(meli_integracao)
-    response = {}
+
     try:
         response = meli_service.get_me()
         return jsonify({
             "status": "success",
             "data": response.get("data", response),
-            "raw": str(response.get("raw", ""))
+            "raw": str(response.get("raw", {}))
         })
     except Exception as e:
         return jsonify({
             "status": "error",
             "message": str(e),
-            "raw": str(response.get("raw", ""))
+            "raw": str(response.get("raw", {})) if isinstance(response, dict) else ""
         }), 500
-
-
 

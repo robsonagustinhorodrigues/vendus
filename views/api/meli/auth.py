@@ -8,7 +8,7 @@ import base64
 import hashlib
 import secrets
 from datetime import datetime, timedelta, timezone
-from services.meli.client_meli import MeliClient
+from services.meli.meli_client import MeliClient
 
 auth = Blueprint("auth", __name__)
 

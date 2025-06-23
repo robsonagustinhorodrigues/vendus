@@ -37,6 +37,8 @@ class MeliIntegracao(db.Model):
     expires_at = db.Column(db.DateTime, nullable=True)
     
     def token_expirado(self):
-        if self.expires_at is None:
-            return True
-        return datetime.now(timezone.utc) >= self.expires_at
+
+        if self.expires_at.tzinfo is None:
+            expires_at = self.expires_at.replace(tzinfo=timezone.utc)
+
+        return datetime.now(timezone.utc) >= expires_at
