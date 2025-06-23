@@ -1,7 +1,7 @@
 import os
 import requests
 from datetime import datetime, timedelta, timezone
-from models import db, MeliIntegration
+from models import db, MeliIntegracao
 
 class MeliClient:
     def __init__(self, meli_integracao):

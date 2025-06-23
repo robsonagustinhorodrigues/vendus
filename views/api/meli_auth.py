@@ -2,7 +2,7 @@ import os
 import requests
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import login_required, current_user
-from models import db, MeliIntegration
+from models import db, MeliIntegracao
 import os
 import base64
 import hashlib
@@ -46,12 +46,12 @@ def callback_meli():
 
     if not code:
         flash("Código de autorização não recebido.", "danger")
-        return redirect(url_for("dashboard.integracoes_meli.index"))
+        return redirect(url_for("dashboard.meli_integracoes.index"))
 
     code_verifier = session.get("meli_code_verifier")
     if not code_verifier:
         flash("Code Verifier não encontrado na sessão.", "danger")
-        return redirect(url_for("dashboard.integracoes_meli.index"))
+        return redirect(url_for("dashboard.meli_integracoes.index"))
 
     token_url = os.getenv("MELI_URL_TOKEN", "https://api.mercadolibre.com/oauth/token")
     payload = {
@@ -68,7 +68,7 @@ def callback_meli():
     )
     if response.status_code != 200:
         flash("Erro ao obter o token de acesso.", "danger")
-        return redirect(url_for("dashboard.integracoes_meli.index"))
+        return redirect(url_for("dashboard.meli_integracoes.index"))
 
     data_tokens = response.json()
     access_token = data_tokens.get("access_token")
@@ -79,14 +79,14 @@ def callback_meli():
     user_id = data_tokens.get("user_id")
 
     # Verifica se já existe
-    existing = MeliIntegration.query.filter_by(
+    existing = MeliIntegracao.query.filter_by(
         user_id=current_user.id, meli_store_id=str(user_id)
     ).first()
     if existing:
         flash("Essa conta já está conectada.", "info")
-        return redirect(url_for("dashboard.integracoes_meli.index"))
+        return redirect(url_for("dashboard.meli_integracoes.index"))
 
-    integracao = MeliIntegration(
+    integracao = MeliIntegracao(
         user_id=current_user.id,
         meli_nome=f"Conta Meli {user_id}",
         meli_store_id=str(user_id),
@@ -98,14 +98,14 @@ def callback_meli():
     db.session.commit()
 
     meli_client = MeliClient(integracao)
-    me = meli_client.post("users/me")
+    user_info = meli_client.post("users/me")
     
-    integracao.meli_id = me.get("id", "")
-    integracao.meli_nome = me.get("nickname", "")
-    integracao.meli_email = me.get("email", "")
-    integracao.meli_link = me.get("permalink", "")
+    integracao.meli_id = user_info.get("id", "")
+    integracao.meli_nome = user_info.get("nickname", "")
+    integracao.meli_email = user_info.get("email", "")
+    integracao.meli_link = user_info.get("permalink", "")
 
     db.session.commit()
 
     flash("Conta Mercado Livre conectada com sucesso!", "success")
-    return redirect(url_for("dashboard.integracoes_meli.index"))
+    return redirect(url_for("dashboard.meli_integracoes.index"))

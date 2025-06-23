@@ -6,11 +6,13 @@ from datetime import datetime, timezone, timedelta
 db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+    
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    meli_integrations = db.relationship('MeliIntegration', backref='user', lazy=True)
+    meli_integracoes = db.relationship('MeliIntegracao', backref='user', lazy=True)
     
     # Função para definir a senha com hash
     def set_password(self, password):
@@ -20,7 +22,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-class MeliIntegration(db.Model):
+class MeliIntegracao(db.Model):
+    __tablename__ = 'meli_integracoes'
+    
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     meli_nome = db.Column(db.String(255), nullable=True)

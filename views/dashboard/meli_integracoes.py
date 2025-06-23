@@ -1,16 +1,16 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
-from models import db, MeliIntegration
+from models import db, MeliIntegracao
 
-integracoes_meli = Blueprint('integracoes_meli', __name__)
+meli_integracoes = Blueprint('meli_integracoes', __name__)
 
-@integracoes_meli.route('/')
+@meli_integracoes.route('/')
 @login_required
 def index():
-    integracoes_meli = MeliIntegration.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard/integracoes_meli.html', integracoes_meli=integracoes_meli)
+    meli_integracoes = MeliIntegracao.query.filter_by(user_id=current_user.id).all()
+    return render_template('dashboard/meli_integracoes.html', meli_integracoes=meli_integracoes)
 
-@integracoes_meli.route('/adicionar', methods=['POST'])
+@meli_integracoes.route('/adicionar', methods=['POST'])
 @login_required
 def adicionar():    
     meli_nome = request.form.get('nome')
@@ -18,7 +18,7 @@ def adicionar():
 
     if meli_nome and meli_store_id:
         meli_store_id = str(meli_store_id)
-        nova = MeliIntegration(
+        nova = MeliIntegracao(
             meli_nome=meli_nome,
             meli_store_id=meli_store_id,
             user_id=current_user.id,
@@ -30,13 +30,13 @@ def adicionar():
     else:
         flash('Preencha todos os campos.', 'danger')
 
-    return redirect(url_for('integracoes_meli.index'))
+    return redirect(url_for('meli_integracoes.index'))
 
-@integracoes_meli.route('/remover', methods=['POST'])
+@meli_integracoes.route('/remover', methods=['POST'])
 @login_required
 def remover():
     integracao_id = request.form.get('id')
-    integracao = MeliIntegration.query.get(integracao_id)
+    integracao = MeliIntegracao.query.get(integracao_id)
 
     if integracao and integracao.user_id == current_user.id:
         db.session.delete(integracao)
@@ -45,4 +45,4 @@ def remover():
     else:
         flash('Erro ao remover integração.', 'danger')
 
-    return redirect(url_for('integracoes_meli.index'))
+    return redirect(url_for('meli_integracoes.index'))
