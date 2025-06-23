@@ -26,7 +26,7 @@ class MeliIntegration(db.Model):
     meli_id = db.Column(db.String(255), nullable=False)
     meli_email = db.Column(db.String(255), nullable=False)
     meli_link = db.Column(db.String(255), nullable=False)
-    mercado_livre_store_id = db.Column(db.String(255), nullable=False)
+    meli_store_id = db.Column(db.String(255), nullable=False)
     access_token = db.Column(db.String(255), nullable=False)
     refresh_token = db.Column(db.String(255), nullable=True)
     expires_at = db.Column(db.DateTime, nullable=True)

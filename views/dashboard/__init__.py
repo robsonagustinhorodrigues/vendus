@@ -23,7 +23,7 @@ def index():
         try:
             # Requisição à API do Mercado Livre para buscar os anúncios da loja
             response = requests.get(
-                f'https://api.mercadolibre.com/users/{meli_integration.mercado_livre_store_id}/items',
+                f'https://api.mercadolibre.com/users/{meli_integration.meli_store_id}/items',
                 headers={'Authorization': f'Bearer {meli_integration.access_token}'}
             )
             
@@ -31,10 +31,10 @@ def index():
             if response.status_code == 200:
                 all_listings.append(response.json())  # Adiciona os anúncios ao array
             else:
-                flash(f'Erro ao carregar anúncios da API do Mercado Livre para a loja {meli_integration.mercado_livre_store_id}.', 'error')
+                flash(f'Erro ao carregar anúncios da API do Mercado Livre para a loja {meli_integration.meli_store_id}.', 'error')
 
         except requests.exceptions.RequestException as e:
-            flash(f'Ocorreu um erro ao fazer a requisição para a loja {meli_integration.mercado_livre_store_id}: {e}', 'error')
+            flash(f'Ocorreu um erro ao fazer a requisição para a loja {meli_integration.meli_store_id}: {e}', 'error')
 
     # Renderiza o template e envia os anúncios para o front-end
     return render_template('dashboard.html', listings=all_listings)

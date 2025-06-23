@@ -80,7 +80,7 @@ def callback_meli():
 
     # Verifica se já existe
     existing = MeliIntegration.query.filter_by(
-        user_id=current_user.id, mercado_livre_store_id=str(user_id)
+        user_id=current_user.id, meli_store_id=str(user_id)
     ).first()
     if existing:
         flash("Essa conta já está conectada.", "info")
@@ -88,8 +88,8 @@ def callback_meli():
 
     integracao = MeliIntegration(
         user_id=current_user.id,
-        nome=f"Conta Meli {user_id}",
-        mercado_livre_store_id=str(user_id),
+        meli_nome=f"Conta Meli {user_id}",
+        meli_store_id=str(user_id),
         access_token=access_token,
         refresh_token=refresh_token,
         expires_at=expires_at,

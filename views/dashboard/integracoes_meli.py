@@ -14,13 +14,13 @@ def index():
 @login_required
 def adicionar():    
     nome = request.form.get('nome')
-    store_id = request.form.get('mercado_livre_store_id')
+    store_id = request.form.get('store_id')
 
     if nome and store_id:
         store_id = str(store_id)
         nova = MeliIntegration(
-            nome=nome,
-            mercado_livre_store_id=store_id,
+            meli_nome=nome,
+            meli_store_id=store_id,
             user_id=current_user.id,
             access_token='TEMPORARIO',  # depois substitua com a autenticação real
         )
