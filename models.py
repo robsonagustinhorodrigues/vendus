@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin 
+from flask_login import UserMixin
+from datetime import datetime, timezone, timedelta
 
 db = SQLAlchemy()
 
@@ -30,3 +31,8 @@ class MeliIntegration(db.Model):
     access_token = db.Column(db.String(255), nullable=True)
     refresh_token = db.Column(db.String(255), nullable=True)
     expires_at = db.Column(db.DateTime, nullable=True)
+    
+    def token_expirado(self):
+        if self.expires_at is None:
+            return True
+        return datetime.now(timezone.utc) >= self.expires_at
