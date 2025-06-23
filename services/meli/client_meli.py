@@ -15,7 +15,7 @@ class MeliClient:
     
     def _request(self, method, endpoint, query_params={}, data={}, is_download=False):
 
-        if self.meli_integracao.token_expirado():
+        if self.token_expirado():
             self.refresh_token()
 
         base_url = os.getenv('MELI_URL_API', 'https://api.mercadolibre.com')
@@ -80,4 +80,4 @@ class MeliClient:
                 raise
 
     def token_expirado(self):
-        return datetime.now(timezone.utc) >= self.expires_at
+        return datetime.now(timezone.utc) >= self.meli_integracao.expires_at
