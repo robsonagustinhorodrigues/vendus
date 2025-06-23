@@ -98,12 +98,12 @@ def callback_meli():
     db.session.commit()
 
     meli_client = MeliClient(integracao)
-    me = meli_client.post("users/me")
+    user_info = meli_client.post("users/me")
     
-    integracao.meli_id = me.get("id", "")
-    integracao.meli_nome = me.get("nickname", "")
-    integracao.meli_email = me.get("email", "")
-    integracao.meli_link = me.get("permalink", "")
+    integracao.meli_id = user_info.get("id", "")
+    integracao.meli_nome = user_info.get("nickname", "")
+    integracao.meli_email = user_info.get("email", "")
+    integracao.meli_link = user_info.get("permalink", "")
 
     db.session.commit()
 
