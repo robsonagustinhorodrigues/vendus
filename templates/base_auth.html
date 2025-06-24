@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Vendus{% endblock %}</title>
-<link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}" type="image/x-icon">
-
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='icons/favicon.ico') }}"
+      type="image/x-icon"
+    />
 
     <!-- Bootstrap, ícones e estilos -->
     <link
@@ -24,6 +27,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
+    <script src="https://pfau-software.de/json-viewer/dist/iife/index.js"></script>
   </head>
   <body class="bg-light">
     <!-- Topbar -->
@@ -96,6 +100,5 @@
     </script>
 
     {% block scripts %} {% endblock %}
-
   </body>
 </html>

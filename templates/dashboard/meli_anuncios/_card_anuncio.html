@@ -1,0 +1,14 @@
+<div class="col-md-4">
+  <div class="card shadow-sm border-0 h-100">
+    <img src="{{ anuncio.thumbnail }}" class="card-img-top" alt="{{ anuncio.title }}">
+    <div class="card-body">
+      <h6 class="card-title fw-bold">{{ anuncio.title }}</h6>
+      <p class="text-muted mb-1 small">ID: {{ anuncio.id }}</p>
+      <p class="mb-1">Preço: <strong>R$ {{ anuncio.price | float | round(2) }}</strong></p>
+      <p class="text-muted small">Categoria: {{ anuncio.category_id }}</p>
+      <a href="https://produto.mercadolivre.com.br/{{ anuncio.id }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+        Ver Anúncio
+      </a>
+    </div>
+  </div>
+</div>

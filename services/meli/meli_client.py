@@ -10,13 +10,13 @@ class MeliClient:
     def __init__(self, meli_integracao):
         self.meli_integracao = meli_integracao 
     
-    def get(self, endpoint, query_params=None, is_download=False):
-        return self._request('GET', endpoint, query_params or {}, {}, is_download)
+    def get(self, endpoint, params=None, is_download=False):
+        return self._request('GET', endpoint, params or {}, {}, is_download)
 
     def post(self, endpoint, data=None, is_download=False):
         return self._request('POST', endpoint, {}, data or {}, is_download)
     
-    def _request(self, method, endpoint, query_params={}, data={}, is_download=False):
+    def _request(self, method, endpoint, params={}, data={}, is_download=False):
 
         # Verifica se o token expirou e renova se necessário
         if self.meli_integracao.token_expirado():
@@ -33,7 +33,7 @@ class MeliClient:
             if method.upper() == 'POST':
                 response = requests.post(url, headers=headers, json=data)
             elif method.upper() == 'GET':
-                response = requests.get(url, headers=headers, params=query_params)
+                response = requests.get(url, headers=headers, params=params)
             else:
                 response = requests.request(method, url, headers=headers, json=data)
 

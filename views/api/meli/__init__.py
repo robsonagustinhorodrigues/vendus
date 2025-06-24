@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, session, redirect, url_for, request, flash
 from flask_login import login_required, current_user
 from models import db, MeliIntegracao
 from services.meli.meli_integracao import MeliIntegracao as MeliIntegracaoService
+from services.meli.meli_client import MeliClient
 
 meli = Blueprint("meli", __name__)
 
@@ -63,3 +64,23 @@ def me(id):
             "raw": str(response.get("raw", {})) if isinstance(response, dict) else ""
         }), 500
 
+@meli.route('/items')
+@login_required
+def buscar_itens():
+    ids = request.args.get("ids")
+    integracao_id = request.args.get("integracao_id")
+    if not ids:
+        return jsonify({"status": "error", "message": "IDs não informados"}), 400
+
+    id_list = ids.split(",")
+
+    meli_integracao = MeliIntegracao.query.filter_by(id=integracao_id, user_id=current_user.id).first()
+    if not meli_integracao:
+        return jsonify({"status": "error", "message": "Integração não encontrada"}), 404
+
+    try:
+        meli_client = MeliClient(meli_integracao)
+        result = meli_client.get("/items", params={"ids": ",".join(id_list)})
+        return jsonify({"status": "success", "data": result})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500

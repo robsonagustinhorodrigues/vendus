@@ -12,31 +12,37 @@ def index():
     meli_integracoes = MeliIntegracao.query.filter_by(user_id=current_user.id).all()  # Pega as integrações do usuário
 
     # Renderiza o template e envia os anúncios para o front-end
-    return render_template('dashboard/meli_anuncios.html', meli_integracoes=meli_integracoes)
+    return render_template('dashboard/meli_anuncios/index.html', meli_integracoes=meli_integracoes)
 
 
-@meli_anuncios.route("/buscar", methods=["POST"])
+@meli_anuncios.route('/buscar', methods=['POST'])
 @login_required
-def buscar_anuncios():
+def buscar():
     integracao_id = request.form.get("integracao_id")
+    q = request.form.get("q")
     status = request.form.get("status")
-    search = request.form.get("search")
+    offset = request.form.get("offset", type=int, default=0)
+    limit = request.form.get("limit", type=int, default=50)
 
-    integracao = MeliIntegracao.query.filter_by(id=integracao_id, user_id=current_user.id).first()
-    if not integracao:
+    meli_integracao = MeliIntegracao.query.filter_by(id=integracao_id, user_id=current_user.id).first()
+    if not meli_integracao:
         return jsonify({"status": "error", "message": "Integração não encontrada"}), 404
 
     try:
-        meli = MeliClient(integracao)
-        params = {"offset": 0, "limit": 20}
-        if status:
-            params["status"] = status
-        if search:
-            params["q"] = search
+        meli = MeliClient(meli_integracao)
 
-        resultado = meli.get("/users/{}/items/search".format(integracao.meli_id), params=params)
+        params = {
+            "offset": offset,
+            "limit": limit
+        }
+        if q: params["q"] = q
+        if status: params["status"] = status
 
-        return render_template("dashboard/meli_anuncios/resultados.html", anuncios=resultado.get("results", []))
+        seller_id = meli_integracao.meli_store_id  # Corrigido
+        response = meli.get(f"/users/{seller_id}/items/search", params=params)
+
+        return jsonify({"status": "success", "data": response})
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+

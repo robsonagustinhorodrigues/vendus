@@ -1,0 +1,32 @@
+<form id="formBuscaAnuncios" class="row gy-2 gx-3 align-items-end mb-4">
+  <div class="col-md-4">
+    <label for="integracaoSelect" class="form-label">Integração</label>
+    <select id="integracaoSelect" name="integracao_id" class="form-select" required>
+      <option value="" disabled selected>Escolha uma conta</option>
+      {% for conta in meli_integracoes %}
+        <option value="{{ conta.id }}">{{ conta.meli_nome or "Loja #" ~ conta.meli_store_id }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label for="inputStatus" class="form-label">Status</label>
+    <select id="inputStatus" name="status" class="form-select">
+      <option value="">Todos</option>
+      <option value="active">Ativo</option>
+      <option value="paused">Pausado</option>
+      <option value="closed">Finalizado</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label for="inputBusca" class="form-label">Buscar</label>
+    <input type="text" id="inputBusca" name="q" class="form-control" placeholder="Ex: barba, fone, etc.">
+  </div>
+
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">
+      <i class="bi bi-search me-1"></i> Buscar
+    </button>
+  </div>
+</form>

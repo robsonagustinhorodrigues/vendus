@@ -1,0 +1,22 @@
+{% extends 'base_auth.html' %}
+{% block title %}Anúncios Mercado Livre{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4">
+  <div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fw-bold mb-0">Anúncios Mercado Livre</h2>
+  </div>
+
+  {% include 'dashboard/meli_anuncios/_form_busca.html' %}
+
+  <div id="resultadoBusca" class="row g-4"></div>
+  <div id="mensagemErro" class="alert alert-danger d-none text-center mt-4"></div>
+</div>
+{% endblock %}
+
+{% include 'dashboard/meli_anuncios/_modal_json.html' %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/meli_anuncios.js') }}"></script>
+{% endblock %}
