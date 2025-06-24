@@ -1,0 +1,48 @@
+{% for conta in meli_integracoes %}
+<div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm border-0 h-100">
+    <div class="card-body">
+      <h5 class="card-title fw-semibold">
+        {{ conta.meli_nome or "Loja Meli #" ~ conta.meli_store_id }}
+      </h5>
+      <p class="text-muted small mb-2">
+        ID da Loja: <code>{{ conta.meli_id }}</code>
+      </p>
+      <p class="text-muted small mb-2">
+        Email: <code>{{ conta.meli_email }}</code>
+      </p>
+      <p class="text-muted small mb-3">
+        Link: <code>{{ conta.meli_link }}</code>
+      </p>
+
+      <form
+        method="POST"
+        action="{{ url_for('dashboard.meli_integracoes.remover', id=conta.id) }}"
+      >
+        <button
+          type="submit"
+          class="btn btn-sm btn-outline-danger w-100 mb-2"
+        >
+          <i class="bi bi-trash me-1"></i> Remover Integração
+        </button>
+      </form>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-primary w-100 mt-2"
+        onclick="analisarReputacao({{ conta.id }})"
+      >
+        <i class="bi bi-bar-chart-fill me-1"></i> Analisar Reputação
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-success w-100"
+        onclick="testarConexao({{ conta.id }})"
+      >
+        <i class="bi bi-check-circle me-1"></i> Testar Conexão
+      </button>
+    </div>
+  </div>
+</div>
+{% endfor %}

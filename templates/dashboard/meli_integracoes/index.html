@@ -1,0 +1,22 @@
+{% extends 'base_auth.html' %}
+{% block title %}Integrações Mercado Livre{% endblock %}
+
+{% block content %}
+  {% include 'dashboard/meli_integracoes/_header.html' %}
+
+  {% if meli_integracoes %}
+    {% include 'dashboard/meli_integracoes/_cards.html' %}
+  {% else %}
+    <div class="alert alert-info text-center">
+      Nenhuma conta Mercado Livre conectada. Clique no botão acima para iniciar a integração.
+    </div>
+  {% endif %}
+
+  {% include 'dashboard/meli_integracoes/_modal_json.html' %}
+  {% include 'dashboard/meli_integracoes/_modal_reputacao.html' %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/meli_integracoes.js') }}"></script>
+{% endblock %}

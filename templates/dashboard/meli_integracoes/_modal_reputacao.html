@@ -1,0 +1,107 @@
+<!-- Modal de Reputação -->
+<div
+  class="modal fade"
+  id="modalReputacao"
+  tabindex="-1"
+  aria-labelledby="modalReputacaoLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalReputacaoLabel">
+          Análise de Reputação do Vendedor
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fechar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div id="reputacaoVisual">
+          <div class="mb-3">
+            <h5 class="fw-bold">
+              Loja: <span id="reputacaoNickname" class="text-primary"></span>
+            </h5>
+            <p>
+              Status Power Seller:
+              <span id="reputacaoPowerSeller" class="badge bg-secondary"></span>
+            </p>
+            <p>
+              Nível de Reputação:
+              <span id="reputacaoNivel" class="badge"></span>
+            </p>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-success">Transações</h6>
+                  <ul class="list-unstyled small">
+                    <li>Completas: <span id="transCompletas"></span></li>
+                    <li>Canceladas: <span id="transCanceladas"></span></li>
+                    <li>Total: <span id="transTotal"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-warning">Métricas</h6>
+                  <ul class="list-unstyled small">
+                    <li>Reclamações: <span id="metricaClaims"></span></li>
+                    <li>Atrasos: <span id="metricaDelayed"></span></li>
+                    <li>Cancelamentos: <span id="metricaCanceled"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                  <h6 class="card-title text-info">Outros</h6>
+                  <ul class="list-unstyled small">
+                    <li>Taxa positiva: <span id="taxaPositiva"></span></li>
+                    <li>Taxa negativa: <span id="taxaNegativa"></span></li>
+                    <li>Taxa neutra: <span id="taxaNeutra"></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="fw-semibold">Informações Adicionais</h6>
+              <ul class="list-unstyled small">
+                <li>Status: <span id="sellerStatus"></span></li>
+                <li>Desde: <span id="sellerDesde"></span></li>
+                <li>Tipo de Vendedor: <span id="sellerTipo"></span></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-semibold">Perguntas & Atendimento</h6>
+              <ul class="list-unstyled small">
+                <li>Status: <span id="reputacaoStatus"></span></li>
+                <li>Desde: <span id="reputacaoCadastro"></span></li>
+                <li>Tipo de Vendedor: <span id="reputacaoTipoVendedor"></span></li>
+                <li>Taxa de Resposta: <span id="reputacaoTaxaResposta"></span></li>
+                <li>Tempo Médio: <span id="reputacaoTempoMedio"></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <pre
+          id="conteudoReputacaoRaw"
+          class="bg-light p-3 mt-4 rounded text-wrap small d-none"
+        ></pre>
+      </div>
+    </div>
+  </div>
+</div>

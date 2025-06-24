@@ -19,7 +19,7 @@ def index():
     meli_integracoes = MeliIntegracao.query.filter_by(user_id=current_user.id).all()
 
     return render_template(
-        "dashboard/meli_integracoes.html", meli_integracoes=meli_integracoes
+        "dashboard/meli_integracoes/index.html", meli_integracoes=meli_integracoes
     )
 
 
