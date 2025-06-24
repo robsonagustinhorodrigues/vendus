@@ -6,7 +6,6 @@ from services.meli.meli_integracao import MeliIntegracao as MeliIntegracaoServic
 
 meli_integracoes = Blueprint("meli_integracoes", __name__)
 
-
 @meli_integracoes.route("/")
 @login_required
 def index():

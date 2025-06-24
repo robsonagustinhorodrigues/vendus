@@ -73,3 +73,23 @@ class MeliIntegracao:
             # "user_metrics": user_metrics,
             # "users_shipping_preferences": users_shipping_preferences
         }
+        
+    def get_mlbs_ativos(self):
+        try:
+            meli_client = MeliClient(self.meli_integracao)
+
+            if self.meli_integracao.token_expirado():
+                meli_client.refresh_token()
+
+            response = meli_client.get(
+                f"/users/{self.meli_integracao.meli_id}/items/search",
+                params={"status": "active", "search_type": "scan", "limit": 1000}
+            )
+
+            mlbs = [str(mlb) for mlb in response.get("results", []) if mlb]
+            return mlbs if mlbs else []
+
+        except Exception as e:
+            print(f"Erro ao buscar MLBs ativos: {str(e)}")
+            raise e
+
