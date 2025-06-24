@@ -79,8 +79,15 @@ def buscar_itens():
         return jsonify({"status": "error", "message": "Integração não encontrada"}), 404
 
     try:
+        result_elements = []
         meli_client = MeliClient(meli_integracao)
-        result = meli_client.get("/items", params={"ids": ",".join(id_list)})
-        return jsonify({"status": "success", "data": result})
+        for element in id_list:
+            element_response = meli_client.get(f"/items/{element}")
+            result_elements.append(element_response)
+            
+        # print(f"Fetched {len(result_elements)} items from Mercado Livre for IDs: {id_list}")
+        # print(f"Response data: {result_elements}")
+        # result = meli_client.get("/items", params={"ids": ",".join(id_list)})
+        return jsonify({"status": "success", "data": result_elements})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500

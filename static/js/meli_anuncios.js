@@ -39,17 +39,17 @@ document
                 throw new Error("Formato inesperado na resposta da API.");
               }
 
-              resposta.data.forEach((obj) => {
-                const anuncio = obj.body;
+              resposta.data.forEach((anuncio) => {
+                // const anuncio = obj.body;
                 const col = document.createElement("div");
                 col.className = "col-md-4";
-                const link = `https://produto.mercadolivre.com.br/${anuncio.id}`;
+                const link = `https://produto.mercadolivre.com.br/${anuncio.id.replace('MLB-', 'MLB').replace('MLB', 'MLB-')}`;
                 const jsonStr = encodeURIComponent(JSON.stringify(anuncio));
                 col.innerHTML = `
                     <div class="card shadow-sm border-0 h-100">
                     <img src="${anuncio.thumbnail}" class="card-img-top" alt="${
                   anuncio.title
-                }" style="height: 250px; object-fit: cover;">
+                }" style="max-width: 100px; max-height: 200px; object-fit: contain;">
                     <div class="card-body">
                         <h6 class="card-title fw-bold">
                         ${anuncio.title}

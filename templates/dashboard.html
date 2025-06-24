@@ -1,31 +1,20 @@
 {% extends 'base_auth.html' %}
 
-{% block content %}
-<div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center my-4">
-        <h2 class="fw-bold">Bem-vindo, {{ current_user.username }}</h2>
-        <a href="#" class="btn btn-sm btn-primary"><i class="bi bi-plus-circle"></i> Novo Anúncio</a>
-    </div>
+{% block title %}Bem-vindo{% endblock %}
 
-    <div class="row g-4">
-        {% for listing in listings %}
-        <div class="col-sm-6 col-md-4 col-lg-3">
-            <div class="card shadow-sm border-0 h-100">
-                <img src="{{ listing.image_url }}" class="card-img-top" alt="Imagem do Anúncio">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title text-truncate">{{ listing.title }}</h5>
-                    <p class="card-text text-muted">R$ {{ listing.price }}</p>
-                    <a href="{{ listing.url }}" class="mt-auto btn btn-outline-primary btn-sm">Ver no Mercado Livre</a>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <div class="col-12">
-            <div class="alert alert-info text-center">
-                Nenhum anúncio encontrado. Conecte uma conta Mercado Livre para começar.
-            </div>
-        </div>
-        {% endfor %}
+{% block content %}
+<div class="container py-5">
+  <div class="text-center">
+    <h1 class="fw-bold mb-3">Bem-vindo ao Painel Venflow!</h1>
+    <p class="lead text-muted">Gerencie seus anúncios do Mercado Livre com facilidade.</p>
+
+    <hr class="my-4" style="max-width: 400px; margin: auto;">
+
+    <div class="mt-4">
+      <a href="/dashboard/meli_integracoes" class="btn btn-primary btn-lg">
+        <i class="bi bi-plug"></i> Conectar Conta Mercado Livre
+      </a>
     </div>
+  </div>
 </div>
 {% endblock %}
