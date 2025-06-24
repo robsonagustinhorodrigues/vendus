@@ -34,8 +34,8 @@ def encontrar_posicao_multiplos(busca, lista_mlbs, max_paginas, status_callback)
         except Exception as e:
             status_callback(f"Erro ao buscar página {pagina + 1}: {e}")
             
-    print(f"Total de links coletados: {links_filtrados}")
-    print(f"Total de MLBs a serem verificadas: {mlbs_upper}")
+    # print(f"Total de links coletados: {links_filtrados}")
+    # print(f"Total de MLBs a serem verificadas: {mlbs_upper}")
 
     # Etapa 2: verificar posição dos mlbs na lista completa de links
     for idx, href in enumerate(links_filtrados):

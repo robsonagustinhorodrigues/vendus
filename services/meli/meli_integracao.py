@@ -47,7 +47,8 @@ class MeliIntegracao:
                 db.session.commit()
                 return True
             else:
-                raise Exception(user_info['message'])
+                return False
+                # raise Exception(user_info['message'])
         except Exception as e:
             raise e
         
