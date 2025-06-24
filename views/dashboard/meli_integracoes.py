@@ -43,23 +43,23 @@ def adicionar():
     else:
         flash("Preencha todos os campos.", "danger")
 
-    return redirect(url_for("meli_integracoes.index"))
+    return redirect(url_for("dashboard.meli_integracoes.index"))
 
 
 @meli_integracoes.route("/remover", methods=["POST"])
 @login_required
 def remover():
-    integracao_id = request.form.get("id")
-    integracao = MeliIntegracao.query.get(integracao_id)
+    id = request.args.get("id")
+    meli_integracao = MeliIntegracao.query.filter_by(id=id, user_id=current_user.id).first()
 
-    if integracao and integracao.user_id == current_user.id:
-        db.session.delete(integracao)
+    if meli_integracao:
+        db.session.delete(meli_integracao)
         db.session.commit()
         flash("Integração removida com sucesso!", "success")
     else:
         flash("Erro ao remover integração.", "danger")
 
-    return redirect(url_for("meli_integracoes.index"))
+    return redirect(url_for("dashboard.meli_integracoes.index"))
 
 @meli_integracoes.route("/me/<int:id>")
 @login_required
