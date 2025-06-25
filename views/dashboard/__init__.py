@@ -14,6 +14,9 @@ dashboard.register_blueprint(meli_integracoes, url_prefix='/meli_integracoes')
 from .meli_ranqueamento import meli_ranqueamento
 dashboard.register_blueprint(meli_ranqueamento, url_prefix='/meli_ranqueamento')
 
+from .inpi import inpi
+dashboard.register_blueprint(inpi, url_prefix='/inpi')
+
 # Rota principal do dashboard, mostrando os anúncios do usuário
 @dashboard.route('/')
 @login_required
