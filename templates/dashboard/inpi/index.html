@@ -1,25 +1,32 @@
 {% extends 'base_auth.html' %}
 {% block title %}Consulta INPI{% endblock %}
-
 {% block content %}
-<div class="container py-4">
-  <h2 class="fw-bold mb-4">Consulta Pública - INPI</h2>
+<div class="container-fluid px-4">
+  <h2 class="fw-bold mb-4">Consulta de Marcas no INPI</h2>
 
-  <form id="formConsultaINPI" class="row g-3">
-    <div class="col-md-6">
-      <label for="termo" class="form-label">Termo para consulta</label>
-      <input type="text" id="termo" class="form-control" placeholder="Ex: Nike, Natura, etc." required>
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <form id="formConsulta">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="termo" class="form-label">Marca / Termo</label>
+            <input type="text" class="form-control" id="termo" required />
+          </div>
+          <div class="col-md-3">
+            <label for="classe" class="form-label">Classe (opcional)</label>
+            <input type="text" class="form-control" id="classe" />
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-search me-1"></i> Buscar
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="col-md-4 d-flex align-items-end">
-      <button type="submit" class="btn btn-primary w-100">
-        <i class="bi bi-search me-1"></i> Consultar
-      </button>
-    </div>
-  </form>
-
-  <div class="mt-4" id="resultadoINPI">
-    <!-- Resultados da consulta aqui -->
   </div>
+
+  <div id="resultados" class="row g-4"></div>
 </div>
 {% endblock %}
 
